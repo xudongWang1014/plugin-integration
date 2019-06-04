@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wangxd.example.plugin.integration.persistent.dao.BillHeadDao" >
+    <resultMap id="BaseResultMap" type="com.wangxd.example.plugin.integration.persistent.entity.BillHeadEntity" >
+        <id column="HEAD_KEY" property="headKey" jdbcType="VARCHAR" />
+        <result column="HEAD_NAME" property="headName" jdbcType="VARCHAR" />
+        <result column="BILL_TYPE" property="billType" jdbcType="SMALLINT" />
+        <result column="ORDER_NUM" property="orderNum" jdbcType="INTEGER" />
+        <result column="DATA_FORMAT" property="dataFormat" jdbcType="INTEGER" />
+        <result column="STANDARD_FLAG" property="standardFlag" jdbcType="SMALLINT" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="PHYSICS_FLAG" property="physicsFlag" jdbcType="BIT" />
+        <result column="HEAD_DESC" property="headDesc" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        HEAD_KEY, HEAD_NAME, BILL_TYPE, ORDER_NUM, DATA_FORMAT, STANDARD_FLAG, CREATE_TIME, 
+        UPDATE_TIME, PHYSICS_FLAG, HEAD_DESC
+    </sql>
+
+</mapper>

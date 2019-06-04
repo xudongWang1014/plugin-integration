@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--设置log4j2的自身log级别为warn-->
+<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，
+    当设置成trace时，你会看到log4j2内部各种详细输出-->
+<!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数-->
+<configuration status="INFO" monitorInterval="30">
+    <properties>
+        <!--设置日志在硬盘上输出的目录-->
+        <property name="logPath">D:\Test\logs</property>
+    </properties>
+    <!--先定义所有的appender-->
+    <Appenders>
+        <!--这个输出控制台的配置-->
+        <console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%t]%highlight{%-5level} %c{1.}:%M:%L - %m%n%highlight{%throwable}" />
+        </console>
+        <!-- infosizesize+log-->
+        <RollingFile name="RollingFileInfo" fileName="${logPath}/info.log"  filePattern="${logPath}/info-%d{yyyy-MM-dd}-%i.log">
+            <!--levelonMatchonMismatch-->
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%t]%highlight{%-5level} %c{1.}:%M:%L - %m%n%highlight{%throwable}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <!-- 30Delete -->
+            <DefaultRolloverStrategy>
+                <Delete basePath="${logPath}" maxDepth="2">
+                    <IfFileName glob="info-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="RollingFileWarn" fileName="${logPath}/warn.log" filePattern="${logPath}/warn-%d{yyyy-MM-dd}-%i.log">
+            <!--levelonMatchonMismatch-->
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%t]%highlight{%-5level} %c{1.}:%M:%L - %m%n%highlight{%throwable}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <!-- 30Delete -->
+            <DefaultRolloverStrategy>
+                <Delete basePath="${logPath}" maxDepth="2">
+                    <IfFileName glob="warn-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="RollingFileError" fileName="${logPath}/error.log" filePattern="${logPath}/error-%d{yyyy-MM-dd}-%i.log">
+            <!--levelonMatchonMismatch-->
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%t]%highlight{%-5level} %c{1.}:%M:%L - %m%n%highlight{%throwable}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <!-- 30Delete -->
+            <DefaultRolloverStrategy>
+                <Delete basePath="${logPath}" maxDepth="2">
+                    <IfFileName glob="error-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="RollingFileSql" fileName="${logPath}/sql.log" filePattern="${logPath}/sql-%d{yyyy-MM-dd}-%i.log">
+            <!--levelonMatchonMismatch-->
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%t]%highlight{%-5level} %c{1.}:%M:%L - %m%n%highlight{%throwable}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <!-- 30Delete -->
+            <DefaultRolloverStrategy>
+                <Delete basePath="${logPath}" maxDepth="2">
+                    <IfFileName glob="sql-*.log" />
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+    <loggers>
+        <!--过滤掉spring和hibernate的一些无用的debug信息-->
+        <logger name="org.springframework" level="INFO">
+        </logger>
+        <logger name="org.mybatis" level="INFO">
+        </logger>
+
+        <root level="DEBUG">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileWarn"/>
+            <appender-ref ref="RollingFileError"/>
+        </root>
+    </loggers>
+
+</configuration>
